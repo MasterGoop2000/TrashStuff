@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Crypto Miner</title>
+        <meta charset="UTF-8">
+        <style>
+            .button {
+                border-radius: 20px;
+                font-size: 100%;
+                background-color: white;
+                width: 40%;
+                height: 20%;
+                margin: 10px;
+            }
+
+            .tradeButton {
+                border-radius: 20px;
+                font-size: 100%;
+                background-color: white;
+            }
+
+            .minerBack {
+                width: 60%;
+                height: 60%;
+                background-color: black;
+                border: 1px solid black;
+                
+             
+                
+            }
+
+            .modernMinerButton {
+                font-size: 100%;
+                background-color: black;
+                color: white;
+                width: 60%;
+                height: 20%;
+                margin: 10px;
+            }
+        </style>
+
+        <script>
+            function save(id, thing){
+                document.getElementById(id).innerHTML = thing;
+            }
+
+            function random(min, max){
+                return Math.floor(Math.random() * (max - min) + min) + 1;
+            }
+
+            document.getElementById('inventory').style.display = 'none'; 
+            document.getElementById('yourEggs').style.display = 'none'; 
+        </script>
+        <script>
+            let coins = 100;
+            let gold = 0;
+            let silk = 0; 
+            let iron = 0;
+            var eggs = 1;
+
+
+            function buy(thing){
+                // test the buy iron and silk and gold buttons
+                switch(thing){
+                    case "iron":
+                        if(coins >= 500){
+                            iron += 25;
+                            coins -= 500;
+                            document.getElementById("iron").innerHTML = iron;
+                            document.getElementById("coins").innerHTML = coins;
+                        } else {
+                            alert("You don't have enough coins. Error: Insufficent Funds");
+                        }
+                    break;
+
+                    case "silk":
+                    if(coins >= 1000){
+                        silk += 10000;
+                        coins -= 1200;
+                        document.getElementById("silk").innerHTML = silk;
+                        document.getElementById("coins").innerHTML = coins;
+                    } else {
+                        alert("You don't have enough coins. Error: Insufficent Funds");
+                    }
+                       
+                    break;
+
+                    case "gold":
+                        if(coins >= 1000){
+                            gold += 10;
+                            coins -= 1000;
+                            document.getElementById("gold").innerHTML = gold;
+                            document.getElementById("coins").innerHTML = coins;
+                   
+                        } else {
+                            alert("You don't have enough coins. Error: Insufficent Funds");
+                        }
+                    break;
+                }
+            }
+
+            function buyAllEggs(){
+                
+                let divideCoins = (coins - coins % 10);
+                for(var i = 0; i < divideCoins; i += 10){
+                   
+                    
+                        eggs++;
+                        
+                        coins -= 10;
+                        document.getElementById("coins").innerHTML = coins;
+                        document.getElementById("eggs").innerHTML = eggs;
+                        if(eggs == 0){
+                            break;
+                        }
+                }
+            
+
+            }
+
+            
+            function sellAllEggs(){
+                
+                let divideCoins = (coins - coins % 10);
+                for(var i = 0; i < divideCoins; i += 10){
+                   
+                    
+                        eggs--;
+                        hatchEgg();
+                        document.getElementById("eggs").innerHTML = eggs;
+                        document.getElementById("coins").innerHTML = coins;
+                        if(eggs == 0){
+                            break;
+                        }
+                }
+            
+
+            }
+
+            function promoCode(){
+                let promoCodeInput = prompt("What is the Promotion Code you want to enter?");
+                switch(promoCodeInput){
+                    case "DRAGONFIRE":
+                        Miner("Dragon Miner(10 to 100 coins every second", random(1, 100), 1000, 0)                        
+                    break;
+
+                    case "GOOFYPOWER23":
+                        Miner("Goofy(10 coins every quarter of a second", 10, 250, 0)                        
+                    break;
+
+                    case "OBIWAN":
+                        modernMiner("Obi-Wan Kenobi", 100, 500);
+                    break;
+
+
+                    default: 
+                        alert("Invalid Promotion Code");
+                    break;
+                }
+              
+            }
+            // This code is useful to change coin value: document.getElementById("coins").innerHTML = coins;
+            function upgrade(petName){
+                switch(petName){
+                    // Jo Mama Group Below
+                    case "JO_MAMA":
+                        if(coins >= 400){
+                            document.getElementById("Jo_Mama").innerHTML = "RARE RAPID JO PAPA(250 coins every half a second + Original);";
+                            coins -= 400;
+                            document.getElementById("Jo_Mama").id = "Jo_Papa";
+                            save("coins", coins);
+                            setInterval(function(){
+                                coins += 250;
+                                save("coins", coins);
+                            }, 500);
+                        } else {
+                            alert("You don't have enough to upgrade. Error: Insufficent Funds");
+                        }
+
+                    break;
+
+                   case "Expert_Miner":
+                        if(coins >= 200){
+                            document.getElementById("Expert_Miner").innerHTML = "RAPID Expert Miner(Added RAPID Boost[6 every 1/5 second] + Original);";
+                            document.getElementById("Expert_Miner").id = "Expert_Miner";
+                            setInterval(function(){
+                                coins += 6;
+                                save("coins", coins);
+                            }, 200);
+                        } else {
+                            alert("You don't have enough to upgrade. Error: Insufficent Funds");
+                        }
+
+                    break;
+                    
+
+                    // Basic Miner Group Below
+                    case "Basic_Miner":
+                        if(coins >= 200){
+                            document.getElementById("Basic_Miner").innerHTML = "RAPID Dwarf Miner(20 coins a second + RAPID Boost[10 coins every half a second])";
+                            document.getElementById("Basic_Miner").id = "Dwarf_Miner";
+                            setInterval(function(){
+                                coins += 20;
+                                save("coins", coins);
+                            }, 200);
+
+                            setInterval(function(){
+                                coins += 10;
+                                save("coins", coins);
+                            }, 500);
+                        } else {
+                            alert("You don't have enough to upgrade. Error: Insufficent Funds");
+                        }
+
+                    break;
+
+
+
+
+
+                    // Basic Miner Group Above
+                }
+            }
+            function hatchEgg(type){
+                if(eggs > 0) {
+                    eggs--;
+                    document.getElementById("eggs").innerHTML = eggs;
+                    //let randomSelector = random(1, 70);
+                    //let randomSelector = random(1, 70);
+                    let randomSelector = random(1, 100000)
+                    console.log(randomSelector);
+
+                    // Make a new egg
+
+                    
+                    let elementEgg = document.createElement("button");
+                    elementEgg.className = "button";
+                    // elementEgg.className = "EggMinerButton";
+                    switch(randomSelector){
+                        case 1, 2, 5, 6, 4, 9, 19, 13, 18, 20, 10, 21, 22, 23, 24, 25, 26:
+                            
+                            elementEgg.innerHTML = "Basic Miner(5 coins every second) Upgrade: 50 coins";
+                            elementEgg.onclick = upgrade("Basic_Miner");
+                            elementEgg.id = "Basic_Miner";
+                            document.getElementById("miners").appendChild(elementEgg);
+                            // add upgrade function: elementEgg.onclick = upgrade(basicMiner);
+                            setInterval(function(){
+                                coins += 5;
+                                document.getElementById("coins").innerHTML = coins;
+                            }, 1000);
+                        break;
+
+                        case 27, 28, 30:
+                            let randomNumber1 = random(20, 30);
+                            elementEgg.innerHTML = "Void Miner 20 to 30 coins every second) Upgrade: 300 coins";
+                            document.getElementById("miners").appendChild(elementEgg);
+                            setInterval(function(){
+                                coins += randomNumber1;
+                                document.getElementById("coins").innerHTML = coins;
+                            }, 1000);
+                       
+                        break;
+
+                        case 3, 29:
+                            elementEgg.innerHTML = "LEGENDARY-JO MAMA(40 coins every second) Upgrade: 400 coins";
+                            elementEgg.onclick = function(){
+                                switch(elementEgg.innerHTML){
+                                    case "LEGENDARY-JO MAMA(40 coins every second) Upgrade: 400 coins":
+                                        if(coins >= 400){
+                                            coins -= 400;
+                                            document.getElementById("coins").innerHTML = coins;
+                                            elementEgg.innerHTML = "LEGENDARY-RAPID-JO PAPA(80 coins every half second) Upgrade: 100 000 coins";
+                                            setInterval(function(){
+                                                coins += 40;
+                                                document.getElementById("coins").innerHTML = coins;
+                                            }, 500);
+                                        } else {
+                                            alert("Can't upgrade. Error: Insufficent Funds")
+                                        }
+                                       
+                                    break;
+
+                                    case "LEGENDARY-RAPID-JO PAPA(80 coins every half second) Upgrade: 100 000 coins":
+                                        if(coins >= 100000){
+                                            coins -= 100000;
+                                            document.getElementById("coins").innerHTML = coins;
+                                        }
+                                        elementEgg.innerHTML = "LEGENDARY-RAPID-JO BROTHER(160 coins every half second) Upgrade: 1 000 000 coins";
+                                        setInterval(function(){
+                                            coins += 80;
+                                            document.getElementById("coins").innerHTML = coins;
+                                        }, 500);
+                                    break;
+
+                                    case "LEGENDARY-RAPID-JO BROTHER(160 coins every half second) Upgrade: 1 000 000 coins":
+                                        elementEgg.innerHTML = "LEGENDARY-RAPID-JO SISTER(500 coins every half second) Upgrade: 1 000 000 000";
+                                        if(coins >= 1000000){
+                                            coins -= 1000000;
+                                            setInterval(function(){
+                                            coins += 340;
+                                            document.getElementById("coins").innerHTML = coins;
+                                        }, 500);
+                                        } else {
+                                            alert("Can't Upgrade. Error: Insufficent Funds")
+                                        }
+                                    break;
+
+                                    case "LEGENDARY-RAPID-JO SISTER(500 coins every half second) Upgrade: 1 000 000 000":
+                                        elementEgg.innerHTML = "LEGENDARY-RAPID-JO FAMILY(10 000 coins every half second) Upgrade: 100 000 000 000";
+                                        setInterval(function(){
+                                            coins += 9500;
+                                            document.getElementById("coins").innerHTML = coins;
+                                        }, 500);
+                                    break;
+
+                                    case "LEGENDARY-RAPID-JO FAMILY(10 000 coins every half second) Upgrade: 100 000 000 000":
+                                        elementEgg.innerHTML = "ULTIMATE-RAPID-LEGENDARY-MAX NEVER GONNA GIVE YOU UP";
+                                        setInterval(function(){
+                                            coins += 9500;
+                                            document.getElementById("coins").innerHTML = coins;
+                                        }, 500);
+                                    break;
+                                }
+                            }
+                            document.getElementById("miners").appendChild(elementEgg);
+                            setInterval(function(){
+                                coins += 40;
+                                document.getElementById("coins").innerHTML = coins;
+                            }, 1000);
+                        
+                        
+                        break;
+
+                                                
+                        case 14, 15, 7, 11:
+                        elementEgg.innerHTML = "UNCOMMON-Expert Miner(20 coins every second) Upgrade: 200 coins";
+                        elementEgg.onclick = function(){
+                            switch(elementEgg.innerHTML){
+                                case "UNCOMMON-Expert Miner(20 coins every second) Upgrade: 200 coins":
+                                    elementEgg.innerHTML = "RAPID-BOOST: Expert Miner(Extra RAPID BOOST)(RAPID BOOST: 10 every half second)";
+                                    setInterval(function(){
+                                        coins += 10;
+                                    }, 500);
+                                break;
+                            }
+                        }   
+                        document.getElementById("miners").appendChild(elementEgg);
+                            setInterval(function(){
+                                coins += 20;
+                                document.getElementById("coins").innerHTML = coins;
+                            }, 1000);
+                        break;
+
+                        case 8, 12, 16, 17:
+                            let randomNumber = random(10, 30);
+                            elementEgg.innerHTML = "UNCOMMON-Professor Miner(Random between 10 to 30 coins every second) Upgrade: 200 coins";
+
+                            document.getElementById("miners").appendChild(elementEgg);
+                            setInterval(function(){
+                                coins += randomNumber;
+                                document.getElementById("coins").innerHTML = coins;
+                            }, 1000);
+                        break;
+
+                        case 31, 32:
+                        elementEgg.innerHTML = "UNCOMMON RAPID Doge Miner(20 coins every half second)";
+                            document.getElementById("miners").appendChild(elementEgg);
+                            setInterval(function(){
+                                coins += 20;
+                                document.getElementById("coins").innerHTML = coins;
+                            }, 500);
+                        break;
+                            
+                        case 33, 34, 35, 36, 37, 38:
+                        elementEgg.innerHTML = "COMMON Doge Miner(70 coins every 100 secs)";
+                            document.getElementById("miners").appendChild(elementEgg);
+                            setInterval(function(){
+                                coins += 70;
+                                document.getElementById("coins").innerHTML = coins;
+                            }, 100000);
+                        break;
+
+                        case 39, 40, 41, 42, 43, 44, 45:
+                        elementEgg.innerHTML = "COMMON George the Miner(35 coins a second)";
+                            document.getElementById("miners").appendChild(elementEgg);
+                            setInterval(function(){
+                                coins += 35;
+                                document.getElementById("coins").innerHTML = coins;
+                            }, 1000);
+                        break;
+
+                        case 46, 47, 48, 49:
+                        elementEgg.innerHTML = "RAPID Bob the Builder(2 coins a quarter of a second)";
+                            document.getElementById("miners").appendChild(elementEgg);
+                            setInterval(function(){
+                                coins += 2;
+                                document.getElementById("coins").innerHTML = coins;
+                            }, 250);
+                        break;  
+                    
+
+                        case 50, 51, 52:
+                        elementEgg.innerHTML = "LEGENDARY Jeff the Killer(50 coins every 3 seconds)";
+                            document.getElementById("miners").appendChild(elementEgg);
+                            setInterval(function(){
+                                coins += 50;
+                                document.getElementById("coins").innerHTML = coins;
+                            }, 5000);
+                        break; 
+
+                        case 53, 54, 55, 56, 57, 58, 59, 60:
+                        elementEgg.innerHTML = "Falcon Miner(10 iron every 1 second)";
+                            document.getElementById("miners").appendChild(elementEgg);
+                            setInterval(function(){
+                                iron += 10;
+                                document.getElementById("iron").innerHTML = iron;
+                            }, 1000);
+                        break; 
+
+                        case 61, 62, 63, 64, 65:
+                        elementEgg.innerHTML = "UNCOMMON MR ROBLOX(0.01 a second)(Additional 0.01";
+                            let add = 0.01;
+                            add = add + add;
+                            document.getElementById("miners").appendChild(elementEgg);
+                            setInterval(function(){
+                                coins += add;
+                                document.getElementById("coins").innerHTML = coins;
+                            }, 1000);
+                        break;
+
+                        
+                    }
+                } else {
+                    alert("You don't have any eggs!");
+                }
+            }
+            
+            function buyEgg(type){
+                if(coins >= 10){
+                    coins = coins - 10;
+                    document.getElementById("coins").innerHTML = coins;
+                    document.getElementById("eggs").innerHTML = eggs++;
+                } else if(1 == 1){
+                
+                } else {
+                    alert("You do not have enough coins. Error: Insufficent Funds");
+                }
+
+                switch(type){
+                    case "golden":
+                        if(coins >= 10000){
+                            
+                        } else {
+                            alert("You don't have enough coins: Insufficent Funds");
+                        }
+                    break;
+                }
+            }
+            class Car{
+                constructor(type, color, years){
+                    console.log("You have a " + color + " " + type + ", and it is " + years + " old."); 
+                }
+            }
+            // add taxes 
+            setInterval(function(){
+                class Taxes{
+                    constructor(amount, due){
+                        amount = random(coins, coins + 10000);
+                        setTimeout(function(){
+                            alert("You have taxes! Go check in your miners for taxes!");
+                            let createTax = document.createElement("button");
+                            createTax.className = "button";
+                            createTax.innerHTML = "Pay" + amount + "----TAX----Pay " + amount;
+                            setInterval(function(){
+                                amount += 10;
+
+                            }, 3000);
+
+                        }, 120000);  
+         
+                    }
+                }
+            }, 10000);
+            function Miner(name, power, seconds, cost){
+                    /* back = document.createElement("div");
+                    let make = document.createElement("button");
+                    make.className = "button";
+                    back.className = "minerBack";
+                    back.id = "back";
+                    make.innerHTML = name;
+                    document.getElementById("miners").appendChild(make);
+                    document.getElementById("back").appendChild(back);
+                    coins -= cost;
+                    setInterval(function(){
+                        coins += power;
+                        save("coins", coins);
+                    }, seconds);*/
+                    let elementEgg = document.createElement("button");
+                    elementEgg.innerHTML = name;
+                    elementEgg.className = "button";
+                            document.getElementById("miners").appendChild(elementEgg);
+                            setInterval(function(){
+                                coins += power;
+                                document.getElementById("coins").innerHTML = coins;
+                            }, seconds);
+                }
+
+                function modernMiner(name, power, seconds, cost){
+                    let back = document.createElement("div");
+                    let make = document.createElement("button");
+                    make.className = "modernMinerButton";
+                    back.className = "minerBack";
+                    back.id = "back";
+                    make.innerHTML = name;
+                    document.getElementById("miners").appendChild(back);
+                    document.getElementById("back").appendChild(make);
+                    coins -= cost;
+                    document.getElementById("coins").innerHTML = coins;
+                    save("coins", coins);
+                    setInterval(function(){
+                        coins += power;
+                        document.getElementById("coins").innerHTML = coins;
+                    }, seconds);
+                }
+                    
+                
+            /* setInterval(function(){
+                let random = random(1, 10);
+                switch(random){
+                    case 1:
+                    
+                    break;
+
+                    case 2:
+
+                    break;
+
+                    case 3:
+
+                    break;
+
+                    case 4: 
+
+                    break;
+
+                    case 5:
+
+                    break;
+
+                    default:
+
+                    break;
+                }
+            }*/
+            
+            let thing = new Car("BYD", "white", 1);
+            setInterval(function(){
+                let tax = document.createElement("button");
+                let random = random(1, 10);
+                let type;
+                let amount;
+                let energy;
+                switch(random){
+                    case 1: 
+                        type = "SUPER";
+                        amount = random(coins, coins += 100000);
+                        energy = 10000;
+                        end = false;
+                        
+                        while(end == false){
+                            coins -= energy;
+                        }
+                        tax.onclick = function(){
+                            coins -= amount;
+                            end = true;
+                            document.getElementById("taxes").removeChild(this);
+                        }
+                    break;
+
+                    case 2: 
+                        type = "POISON";
+                        end = false;
+                        let i = 0;
+                        while(end == false){
+                            i++;
+                            amount = i;
+                            tax.onclick = function(){
+                                coins -= amount;
+                                document.getElementById("taxes").removeChild(this);
+                            }
+                        }
+                    break;
+                    
+                    case 3: 
+                        type = "MEGA";
+                    break;
+
+                    case 4: 
+                        type = "";
+                    break;
+
+                    case 5: 
+                        type = "SUPER";
+                    break;
+
+                    default:
+
+                    break;
+                }
+                tax.innerHTML = type + " tax-- " + "Pay " + amount + " --tax" + type; 
+                
+            }, 30000);
+
+            
+            setInterval(function(){
+                let createElement = document.createElement("button");
+                let price = random(coins, coins + random(1, 100));
+                let randomGenerate = random(1, 6);
+                let itemAmount = random(1, coins);
+                let country;
+                let item;
+                function randomise(){
+                    switch(randomGenerate){
+                    case 1, 2:
+                        country = "Egypt";
+                        item = "silk";
+                    break;
+                    case 3, 4:
+                        country = "England";
+                        item = "gold";
+                    break;
+
+                    case 5, 6:
+                        country = "India";
+                        item = "iron";
+                    break;
+                }
+                }
+                createElement.onclick = function(){
+                    if(coins >= number){
+                        coins -= number;
+                        if(item == "iron"){
+                            iron += numberItem;
+                            document.getElementById("iron").innerHTML = iron;
+                        } else if(item == "gold"){
+                            gold += numberItem;
+                            document.getElementById("gold").innerHTML = gold;
+                        } else {
+                            // silk
+                            silk += numberItem;
+                            document.getElementById("silk").innerHTML = silk;
+                        }
+                        setInterval(function(){
+                            document.getElementById("hello").innerHTML = "--Trade Accepted--";
+                        }, 1000);
+                    } else {
+                        alert("You don't have enough coins. Error: Insufficent Funds");
+                    }
+                    alert('DEEZ NUTS')
+                }
+                createElement.id = "hello";
+                createElement.innerHTML = country + " wants " + itemAmount + " " + item + " for " + price + " coins.";
+                document.getElementById("trade").appendChild(createElement);
+            }, 30000);
+        </script>
+    </head>
+    <body style="background-color: #00bfff;">
+        <div style="border: 3px solid black; border-radius: 20px; float: center; float: left;">
+            <!--Back Up Version for Emergency-->
+            <!--<p style="font-size: 200%; font-family: monospace;">Coins:</p>
+            <p style="font-size: 200%; font-family: monospace;" id="coins">100</p>
+            <hr>-->
+            <!--<p style="font-size: 200%; font-family: monospace;">Eggs:</p>
+            <p style="font-size: 200%; font-family: monospace;" id="eggs">1</p>
+            <hr>-->
+            <p style="font-size: 200%; font-family: monospace;">Gold:</p>
+            <button class="tradeButton" id="getGold" onclick="buy('gold')">Buy 10 Gold Ingots(1000 coins)</button>
+            <p style="font-size: 200%; font-family: monospace;" id="gold">0</p>
+            <hr>
+            <p style="font-size: 200%; font-family: monospace;">Silk:</p>
+            <button class="tradeButton" id="getSilk" onclick="buy('silk')">Buy 10000 Silk(1200 coins)</button>
+            <p style="font-size: 200%; font-family: monospace;" id="silk">0</p>
+            <hr>
+            <p style="font-size: 200%; font-family: monospace;">Iron:</p>
+            <button class="tradeButton" id="getIron" onclick="buy('iron')">Buy 25 Iron(500 coins)</button>
+            <p style="font-size: 200%; font-family: monospace; margin-top: 20px;" id="iron">0</p>
+            <hr>
+        </div>    
+
+        <div style="border: 3px solid black; border-radius: 20px; width: 400px; float: right;">
+            <p style="font-size: 200%; font-family: monospace; margin-left: 20px; margin-top: 20px;">Trader</p>
+            <div id="trade">
+
+            </div>
+        </div>
+
+        <h1 style="font-size: 500%; font-family: monospace; text-align: center;">Crypto Miner</h1>
+        <h1 style="font-size: 200%; font-family: monospace; text-align: center">You have decided to make a Crypto Mine. You buy some eggs from you allowance your uncle Jo gave to you. This game was not my idea.</p>
+            <button class="button" onclick="document.getElementById('buyingSec').style.display = 'block'; document.getElementById('eggsSec').style.display = 'block';">Open Shop</button>
+            <button class="button" onclick="document.getElementById('buyingSec').style.display = 'none'; document.getElementById('eggsSec').style.display = 'none';">Close Shop</button>
+            <div style="display: none; border: 3px solid black; border-radius: 20px; background-color: white; width: fit-content; height: fit-content; float: right; " id="buyingSec">
+                <h1 style="font-family: monospace; font-size: 150%; ">The Shop</h1>
+                <div id="eggsSec" style="display: none; border: 3px solid black; border-radius: 20px; background-color: white; width: fit-content; height: fit-content;">
+                    <h1 style="font-family: monospace; font-size: 150%; ">Eggs</h1>
+                    <button class="button" onclick="buyEgg()">Buy a Egg(500 coins)</button>
+                    <button class="button" onclick="buyEgg()">Buy a Golden Egg(10000 coins)</button>
+                </div>
+            </div>
+
+            <button class="button" onclick="buyAllEggs()">Buy all Eggs you can buy</button>
+            <button class="button" onclick="promoCode()">Use a Promotion Code</button>
+            <button class="button" onclick="hatchEgg()">Hatch a Egg</button>
+            <button class="button" onclick="sellAllEggs()">Does not work: Hatch all Eggs</button>
+            <button class="button" onclick="document.getElementById('inventory').style.display = 'block'; document.getElementById('yourEggs').style.display = 'block';">Open Inventory</button>
+            
+            <div style="background-color: white; margin-left: auto; margin-right: auto; width: 70%; height: fit-content; border: 3px solid black; border-radius: 20px;" id="inventory">
+                <!--Inventory-->
+                <button class="button" style="float: left; width: 20%; height: 20%;" onclick="document.getElementById('inventory').style.display = 'none'; document.getElementById('yourEggs').style.display = 'none';">Close Inventory</button>
+                <h1 style="font-size: 150%; font-family: monospace; text-align: center;">Inventory</h1>
+                
+                <div style="width: fit-content; height: fit-content; border: 3px solid black; margin: auto; border-radius: 20px;">
+                    <h1 style="font-size: 150%; font-family: monospace; text-align: center;">Miners</h1>
+                    <div style="float: center; border: 3px solid black; border-radius: 20px; width: fit-content; height: fit-content;" id="miners">
+                        <!--Miners-->
+                    </div>
+                    <h1 style="font-size: 150%; font-family: monospace; text-align: left;">Taxes</h1>
+                    <div style="float: left; border: 3px solid black; border-radius: 20px; width: fit-content; height: fit-content; margin-left: 100%;" id="taxes">
+                        <!--Taxes-->
+                    </div>
+                </div>
+                
+                    <div style="width: fit-content; height: fit-content; border: 3px solid black; border-radius: 20px; float: center;">
+                        <table>
+                            <tr>
+                                <td style="border: 3px solid black; font-size: 100%; font-family: monospace;">Coins:</td>
+                                <td style="border: 3px solid black; font-size: 100%; font-family: monospace;">Eggs:</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 3px solid black; font-size: 100%; font-family: monospace;" id="coins">100</td>
+                                <td style="border: 3px solid black; font-size: 100%; font-family: monospace;" id="eggs">1</td>
+                            </tr>
+                        </table>
+                    </div>
+            </div>
+
+        
+    </body>
+</html>
